@@ -185,7 +185,7 @@ for key, value in cfg_vars.items():
 ################################################################################
 
 dep_libs = [
-    'nccl', 'ATen',
+    'nccl', 'caffe2',
     'libshm', 'libshm_windows', 'gloo', 'THD', 'nanopb',
 ]
 
@@ -281,7 +281,7 @@ class build_deps(Command):
         libs = []
         if WITH_NCCL and not WITH_SYSTEM_NCCL:
             libs += ['nccl']
-        libs += ['ATen', 'nanopb']
+        libs += ['caffe2', 'nanopb']
         if IS_WINDOWS:
             libs += ['libshm_windows']
         else:
@@ -566,7 +566,7 @@ include_dirs += [
 library_dirs.append(lib_path)
 
 # we specify exact lib names to avoid conflict with lua-torch installs
-ATEN_LIB = os.path.join(lib_path, 'libATen.so')
+CAFFE2_LIB = os.path.join(lib_path, 'libcaffe2.so')
 THD_LIB = os.path.join(lib_path, 'libTHD.a')
 NCCL_LIB = os.path.join(lib_path, 'libnccl.so.1')
 
@@ -574,11 +574,11 @@ NCCL_LIB = os.path.join(lib_path, 'libnccl.so.1')
 NANOPB_STATIC_LIB = os.path.join(lib_path, 'libprotobuf-nanopb.a')
 
 if IS_DARWIN:
-    ATEN_LIB = os.path.join(lib_path, 'libATen.dylib')
+    CAFFE2_LIB = os.path.join(lib_path, 'libcaffe2.dylib')
     NCCL_LIB = os.path.join(lib_path, 'libnccl.1.dylib')
 
 if IS_WINDOWS:
-    ATEN_LIB = os.path.join(lib_path, 'ATen.lib')
+    CAFFE2_LIB = os.path.join(lib_path, 'caffe2.lib')
     if DEBUG:
         NANOPB_STATIC_LIB = os.path.join(lib_path, 'protobuf-nanopbd.lib')
     else:
@@ -586,7 +586,7 @@ if IS_WINDOWS:
 
 main_compile_args = ['-D_THP_CORE']
 main_libraries = ['shm']
-main_link_args = [ATEN_LIB, NANOPB_STATIC_LIB]
+main_link_args = [CAFFE2_LIB, NANOPB_STATIC_LIB]
 main_sources = [
     "torch/csrc/PtrWrapper.cpp",
     "torch/csrc/Module.cpp",

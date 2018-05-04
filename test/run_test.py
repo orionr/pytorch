@@ -16,7 +16,7 @@ from torch.utils import cpp_extension
 
 TESTS = [
     'autograd',
-    'cpp_extensions',
+    'cpp_extensions',  # failed
     'cuda',
     'dataloader',
     'distributed',

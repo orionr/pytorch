@@ -36,7 +36,11 @@ endif()
 
 
 # ---[ BLAS
-set(BLAS "Eigen" CACHE STRING "Selected BLAS library")
+if(BUILD_ATEN)
+  set(BLAS "MKL" CACHE STRING "Selected BLAS library")
+else()
+  set(BLAS "Eigen" CACHE STRING "Selected BLAS library")
+endif()
 set_property(CACHE BLAS PROPERTY STRINGS "Eigen;ATLAS;OpenBLAS;MKL;vecLib")
 message(STATUS "The BLAS backend of choice:" ${BLAS})
 
@@ -112,7 +116,6 @@ if (NOT TARGET cpuinfo)
   # them into a shared library for Caffe2, so they need PIC.
   set_property(TARGET cpuinfo PROPERTY POSITION_INDEPENDENT_CODE ON)
 endif()
-list(APPEND Caffe2_DEPENDENCY_LIBS cpuinfo)
 
 # ---[ gflags
 if(USE_GFLAGS)

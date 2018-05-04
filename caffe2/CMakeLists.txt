@@ -18,6 +18,12 @@ if(BUILD_ATEN)
     add_subdirectory(../aten aten)
     set(CMAKE_POSITION_INDEPENDENT_CODE ${__caffe2_CMAKE_POSITION_INDEPENDENT_CODE})
   endif()
+
+  # cpuinfo needs to be wholearchive for static ATen support
+  caffe2_interface_library(cpuinfo cpuinfo_library)
+  list(APPEND Caffe2_DEPENDENCY_LIBS cpuinfo_library)
+else()
+  list(APPEND Caffe2_DEPENDENCY_LIBS cpuinfo)
 endif()
 
 # ---[ Caffe2 build

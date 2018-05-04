@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# Shell script used to build the aten/* and third_party/* dependencies prior to
-# linking the libraries and passing the headers to the Python extension
-# compilation stage. This file is used from setup.py, but can also be
+# Shell script used to build the aten/*, caffe2/*, and third_party/*
+* dependencies prior to linking libraries and passing headers to the Python
+# extension compilation stage. This file is used from setup.py, but can also be
 # called standalone to compile the libraries outside of the overall PyTorch
 # build process.
 #
@@ -12,34 +12,33 @@ set -ex
 
 # Options for building only a subset of the libraries
 WITH_CUDA=0
-if [[ "$1" == "--with-cuda" ]]; then
-  WITH_CUDA=1
-  shift
-fi
-
 WITH_NNPACK=0
-if [[ "$1" == "--with-nnpack" ]]; then
-  WITH_NNPACK=1
-  shift
-fi
-
 WITH_MKLDNN=0
-if [[ "$1" == "--with-mkldnn" ]]; then
-  WITH_MKLDNN=1
-  shift
-fi
-
 WITH_GLOO_IBVERBS=0
-if [[ "$1" == "--with-gloo-ibverbs" ]]; then
-  WITH_GLOO_IBVERBS=1
-  shift
-fi
-
 WITH_DISTRIBUTED_MW=0
-if [[ "$1" == "--with-distributed-mw" ]]; then
-  WITH_DISTRIBUTED_MW=1
-  shift
-fi
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --with-cuda)
+          WITH_CUDA=1
+          ;;
+      --with-nnpack)
+          WITH_NNPACK=1
+          ;;
+      --with-mkldnn)
+          WITH_MKLDNN=1
+          ;;
+      --with-gloo-ibverbs)
+          WITH_GLOO_IBVERBS=1
+          ;;
+      --with-distributed-mw)
+          WITH_DISTRIBUTED_MW=1
+          ;;
+      *)
+          break
+          ;;
+    esac
+    shift
+done
 
 CMAKE_INSTALL=${CMAKE_INSTALL-make install}
 
@@ -151,7 +150,6 @@ function build() {
               -DTH_INCLUDE_PATH="$INSTALL_DIR/include" \
               -DTH_LIB_PATH="$INSTALL_DIR/lib" \
               -DTH_LIBRARIES="$INSTALL_DIR/lib/libTH$LD_POSTFIX" \
-              -DATEN_LIBRARIES="$INSTALL_DIR/lib/libATen$LD_POSTFIX" \
               -DTHNN_LIBRARIES="$INSTALL_DIR/lib/libTHNN$LD_POSTFIX" \
               -DTHCUNN_LIBRARIES="$INSTALL_DIR/lib/libTHCUNN$LD_POSTFIX" \
               -DTHS_LIBRARIES="$INSTALL_DIR/lib/libTHS$LD_POSTFIX" \
@@ -215,18 +213,22 @@ function build_nccl() {
 # However, we do explicitly pass library paths when setup.py has already
 # detected them (to ensure that we have a consistent view between the
 # PyTorch and ATen builds.)
-function build_aten() {
+function build_caffe2() {
   mkdir -p build
   pushd build
   ${CMAKE_VERSION} .. \
   ${CMAKE_GENERATOR} \
       -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-      -DNO_CUDA=$((1-$WITH_CUDA)) \
-      -DNO_NNPACK=$((1-$WITH_NNPACK)) \
+      -DBUILD_CAFFE2=OFF \
+      -DBUILD_ATEN=ON \
+      -DBUILD_PYTHON=OFF \
+      -DBUILD_BINARY=OFF \
+      -DUSE_CUDA=$WITH_CUDA \
+      -DUSE_NNPACK=$WITH_NNPACK \
       -DCUDNN_INCLUDE_DIR=$CUDNN_INCLUDE_DIR \
       -DCUDNN_LIB_DIR=$CUDNN_LIB_DIR \
       -DCUDNN_LIBRARY=$CUDNN_LIBRARY \
-      -DNO_MKLDNN=$((1-$WITH_MKLDNN)) \
+      -DUSE_MKLDNN=$WITH_MKLDNN \
       -DMKLDNN_INCLUDE_DIR=$MKLDNN_INCLUDE_DIR \
       -DMKLDNN_LIB_DIR=$MKLDNN_LIB_DIR \
       -DMKLDNN_LIBRARY=$MKLDNN_LIBRARY \
@@ -257,9 +259,9 @@ for arg in "$@"; do
         pushd "$THIRD_PARTY_DIR"
         build gloo $GLOO_FLAGS
         popd
-    elif [[ "$arg" == "ATen" ]]; then
-        pushd "$BASE_DIR/aten"
-        build_aten
+    elif [[ "$arg" == "caffe2" ]]; then
+        pushd $BASE_DIR
+        build_caffe2
         popd
     elif [[ "$arg" == "THD" ]]; then
         pushd "$TORCH_LIB_DIR"
