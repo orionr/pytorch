@@ -15,22 +15,22 @@ import torch
 from torch.utils import cpp_extension
 
 TESTS = [
-    'autograd',
+#    'autograd',
     'cpp_extensions',  # failed
-    'cuda',
-    'dataloader',
-    'distributed',
-    'distributions',
-    'indexing',
-    'jit',
-    'legacy_nn',
-    'multiprocessing',
-    'nccl',
-    'nn',
-    'optim',
-    'sparse',
-    'torch',
-    'utils',
+    # 'cuda',
+    # 'dataloader',
+    # 'distributed',
+    # 'distributions',
+    # 'indexing',
+    # 'jit',
+    # 'legacy_nn',
+    # 'multiprocessing',
+    # 'nccl',
+    # 'nn',
+    # 'optim',
+    # 'sparse',
+    # 'torch',
+    # 'utils',
 ]
 
 WINDOWS_BLACKLIST = [
