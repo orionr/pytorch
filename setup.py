@@ -237,6 +237,7 @@ def build_libs(libs):
         build_libs_cmd += ['--with-distributed-mw']
 
     if subprocess.call(build_libs_cmd + libs, env=my_env) != 0:
+        print("Failed to run '{}'".format(' '.join(build_libs_cmd + libs)))
         sys.exit(1)
 
 missing_pydep = '''

@@ -6,7 +6,7 @@
 # called standalone to compile the libraries outside of the overall PyTorch
 # build process.
 #
-# TODO: Replace this with a CMakeLists.txt
+# TODO: Replace this with the root-level CMakeLists.txt
 
 set -ex
 
@@ -150,6 +150,7 @@ function build() {
               -DTH_INCLUDE_PATH="$INSTALL_DIR/include" \
               -DTH_LIB_PATH="$INSTALL_DIR/lib" \
               -DTH_LIBRARIES="$INSTALL_DIR/lib/libTH$LD_POSTFIX" \
+              -DATEN_LIBRARIES="$INSTALL_DIR/lib/libcaffe2$LD_POSTFIX" \
               -DTHNN_LIBRARIES="$INSTALL_DIR/lib/libTHNN$LD_POSTFIX" \
               -DTHCUNN_LIBRARIES="$INSTALL_DIR/lib/libTHCUNN$LD_POSTFIX" \
               -DTHS_LIBRARIES="$INSTALL_DIR/lib/libTHS$LD_POSTFIX" \
@@ -286,13 +287,13 @@ rm -rf "$INSTALL_DIR/lib/cmake"
 rm -rf "$INSTALL_DIR/lib/python"
 cp "$INSTALL_DIR/lib"/* .
 if [ -d "$INSTALL_DIR/lib64/" ]; then
-    cp "$INSTALL_DIR/lib64"/* .
+    cp -r "$INSTALL_DIR/lib64"/* .
 fi
 cp ../../aten/src/THNN/generic/THNN.h .
 cp ../../aten/src/THCUNN/generic/THCUNN.h .
 cp -r "$INSTALL_DIR/include" .
 if [ -d "$INSTALL_DIR/bin/" ]; then
-    cp "$INSTALL_DIR/bin/"/* .
+    cp -r "$INSTALL_DIR/bin/"/* .
 fi
 
 popd

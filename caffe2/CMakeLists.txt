@@ -19,9 +19,10 @@ if(BUILD_ATEN)
     set(CMAKE_POSITION_INDEPENDENT_CODE ${__caffe2_CMAKE_POSITION_INDEPENDENT_CODE})
   endif()
 
-  # cpuinfo needs to be wholearchive for static ATen support
-  caffe2_interface_library(cpuinfo cpuinfo_library)
-  list(APPEND Caffe2_DEPENDENCY_LIBS cpuinfo_library)
+  # these needs to be wholearchive for static ATen support
+  caffe2_interface_library(cpuinfo cpuinfo_whole)
+  caffe2_interface_library(tbb_static tbb_static_whole)
+  list(APPEND Caffe2_DEPENDENCY_LIBS cpuinfo_whole tbb_static_whole)
 else()
   list(APPEND Caffe2_DEPENDENCY_LIBS cpuinfo)
 endif()
