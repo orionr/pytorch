@@ -41,29 +41,29 @@ MATH_UTILS_DECL T Cube(const T x) {
 }
 
 // Increase the index digits by one based on dims.
-void IncreaseIndexInDims(const int n, const int* dims, int* index);
+void CAFFE2_API IncreaseIndexInDims(const int n, const int* dims, int* index);
 
 // Get index value from dims and index digits.
-int GetIndexFromDims(const int n, const int* dims, const int* index);
+int CAFFE2_API GetIndexFromDims(const int n, const int* dims, const int* index);
 
 // Checks if the input permutation is an identity permutation;
-bool IsIdentityPermutation(const int n, const int* perm);
+bool CAFFE2_API IsIdentityPermutation(const int n, const int* perm);
 
-bool IsRowwiseReduce(
+bool CAFFE2_API IsRowwiseReduce(
     const int ndim,
     const int* X_dims,
     const int* Y_dims,
     int* rows,
     int* cols);
 
-bool IsColwiseReduce(
+bool CAFFE2_API IsColwiseReduce(
     const int ndim,
     const int* X_dims,
     const int* Y_dims,
     int* rows,
     int* cols);
 
-bool IsBothEndsReduce(
+bool CAFFE2_API IsBothEndsReduce(
     const int ndim,
     const int* X_dims,
     const int* Y_dims,
@@ -72,7 +72,7 @@ bool IsBothEndsReduce(
     int* nxt);
 
 // Computest the broadcast binary operation dims.
-void ComputeBroadcastBinaryOpDims(
+void CAFFE2_API ComputeBroadcastBinaryOpDims(
     const int A_ndim,
     const int* A_dims,
     const int B_ndim,
@@ -81,7 +81,7 @@ void ComputeBroadcastBinaryOpDims(
     int* B_broadcast_dims,
     int* C_broadcast_dims);
 
-bool IsRowwiseBroadcastBinaryOp(
+bool CAFFE2_API IsRowwiseBroadcastBinaryOp(
     const int ndim,
     const int* A_dims,
     const int* B_dims,
@@ -89,7 +89,7 @@ bool IsRowwiseBroadcastBinaryOp(
     int* cols,
     bool* broadcast_1st);
 
-bool IsColwiseBroadcastBinaryOp(
+bool CAFFE2_API IsColwiseBroadcastBinaryOp(
     const int ndim,
     const int* A_dims,
     const int* B_dims,
@@ -97,7 +97,7 @@ bool IsColwiseBroadcastBinaryOp(
     int* cols,
     bool* broadcast_1st);
 
-bool IsBothEndsBroadcastBinaryOp(
+bool CAFFE2_API IsBothEndsBroadcastBinaryOp(
     const int ndim,
     const int* A_dims,
     const int* B_dims,
@@ -106,13 +106,13 @@ bool IsBothEndsBroadcastBinaryOp(
     int* nxt,
     bool* broadcast_1st);
 
-void ComputeTransposeAxesForReduceOp(
+void CAFFE2_API ComputeTransposeAxesForReduceOp(
     const int num_dims,
     const int num_reduce_axes,
     const int* reduce_axes,
     int* transpose_axes);
 
-void ComputeTransposedStrides(
+void CAFFE2_API ComputeTransposedStrides(
     const int ndim,
     const int* dims,
     const int* axes,

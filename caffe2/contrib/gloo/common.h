@@ -11,7 +11,7 @@
 namespace caffe2 {
 namespace gloo {
 
-void signalFailure(Blob* status_blob, std::exception& exception);
+void CAFFE2_API signalFailure(Blob* status_blob, std::exception& exception);
 
 struct createDeviceAttr {
     // "tcp" or "ibverbs"
@@ -22,7 +22,7 @@ struct createDeviceAttr {
     std::string interface;
 };
 
-std::shared_ptr<::gloo::transport::Device> createDevice(
+std::shared_ptr<::gloo::transport::Device> CAFFE2_API createDevice(
     const createDeviceAttr attr);
 
 // Captures the parameters passed to Gloo.

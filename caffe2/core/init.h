@@ -8,7 +8,7 @@
 namespace caffe2 {
 
 namespace internal {
-class Caffe2InitializeRegistry {
+class CAFFE2_API Caffe2InitializeRegistry {
  public:
   typedef bool (*InitFunction)(int*, char***);
   // Registry() is defined in .cpp file to make registration work across

@@ -7,17 +7,17 @@ CAFFE2_DECLARE_bool(caffe2_cpu_numa_enabled);
 
 namespace caffe2 {
 
-bool IsNUMAEnabled();
+bool CAFFE2_API IsNUMAEnabled();
 
-void NUMABind(int numa_node_id);
+void CAFFE2_API NUMABind(int numa_node_id);
 
-int GetNUMANode(const void* ptr);
+int CAFFE2_API GetNUMANode(const void* ptr);
 
-int GetNumNUMANodes();
+int CAFFE2_API GetNumNUMANodes();
 
-void NUMAMove(void* ptr, size_t size, int numa_node_id);
+void CAFFE2_API NUMAMove(void* ptr, size_t size, int numa_node_id);
 
-int GetCurrentNUMANode();
+int CAFFE2_API GetCurrentNUMANode();
 
 } // namespace caffe2
 

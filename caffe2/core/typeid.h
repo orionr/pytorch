@@ -33,7 +33,7 @@ class TypeMeta;
  * You need to register your types using CAFFE_KNOWN_TYPE(MyType) to be able to use TypeIdentifier with custom types.
  * This is for example used to store the dtype of tensors.
  */
-class TypeIdentifier final : public at::IdWrapper<TypeIdentifier, uint16_t> {
+class CAFFE2_API TypeIdentifier final : public at::IdWrapper<TypeIdentifier, uint16_t> {
 public:
   static TypeIdentifier createTypeId();
 
@@ -66,11 +66,11 @@ inline std::ostream& operator<<(std::ostream& stream, caffe2::TypeIdentifier typ
 
 namespace caffe2 {
 
-std::unordered_map<TypeIdentifier, std::string>& gTypeNames();
-std::unordered_set<std::string>& gRegisteredTypeNames();
+std::unordered_map<TypeIdentifier, std::string>& gTypeNames() CAFFE2_API;
+std::unordered_set<std::string>& gRegisteredTypeNames() CAFFE2_API;
 
 // A utility function to demangle a function name.
-std::string Demangle(const char* name);
+std::string Demangle(const char* name) CAFFE2_API;
 
 /**
  * Returns the printable name of the type.
@@ -78,7 +78,7 @@ std::string Demangle(const char* name);
  * Works for all types, not only the ones registered with CAFFE_KNOWN_TYPE
  */
 template <typename T>
-static const char* DemangleType() {
+static const char* DemangleType() CAFFE2_API {
 #ifdef __GXX_RTTI
   static const std::string name = Demangle(typeid(T).name());
   return name.c_str();
@@ -89,12 +89,12 @@ static const char* DemangleType() {
 
 // A utility function to return an exception std::string by prepending its exception
 // type before its what() content.
-std::string GetExceptionString(const std::exception& e);
+std::string GetExceptionString(const std::exception& e) CAFFE2_API;
 
-std::mutex& gTypeRegistrationMutex();
+std::mutex& gTypeRegistrationMutex() CAFFE2_API;
 
 template <typename T>
-struct TypeNameRegisterer {
+struct CAFFE2_API TypeNameRegisterer {
   TypeNameRegisterer(TypeIdentifier id, const std::string& literal_name) {
     std::lock_guard<std::mutex> guard(gTypeRegistrationMutex());
 #ifdef __GXX_RTTI
@@ -132,7 +132,7 @@ struct TypeNameRegisterer {
  * stores some additional data such as the item size and the name of the type
  * for run-time inspection.
  */
-class TypeMeta {
+class CAFFE2_API TypeMeta {
  public:
   using PlacementNew = void (void*, size_t);
   using TypedCopy = void (const void*, void*, size_t);
@@ -229,7 +229,7 @@ class TypeMeta {
    * is generated during run-time. Do NOT serialize the id for storage.
    */
   template <typename T>
-  CAFFE2_API static TypeIdentifier Id();
+  static TypeIdentifier Id();
 
   /**
    * Returns the item size of the type. This is equivalent to sizeof(T).

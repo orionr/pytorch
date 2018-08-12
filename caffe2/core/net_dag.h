@@ -26,7 +26,7 @@
 
 namespace caffe2 {
 
-class DAGNetBase : public NetBase {
+class CAFFE2_API DAGNetBase : public NetBase {
  public:
   DAGNetBase(const std::shared_ptr<const NetDef>& net_def, Workspace* ws);
   ~DAGNetBase() override;

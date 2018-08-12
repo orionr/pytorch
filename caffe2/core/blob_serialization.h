@@ -42,7 +42,7 @@ inline unique_ptr<BlobSerializerBase> CreateSerializer(TypeIdentifier id) {
  * TensorSerializer takes in a blob that contains a Tensor, and serializes it
  * into a TensorProto protocol buffer.
  */
-class TensorSerializer : public BlobSerializerBase {
+class CAFFE2_API TensorSerializer : public BlobSerializerBase {
  public:
   TensorSerializer() {}
   ~TensorSerializer() override {}
@@ -77,7 +77,7 @@ class TensorSerializer : public BlobSerializerBase {
  * @brief BlobDeserializerBase is an abstract class that deserializes a blob
  * from a BlobProto or a TensorProto.
  */
-class BlobDeserializerBase {
+class CAFFE2_API BlobDeserializerBase {
  public:
   virtual ~BlobDeserializerBase() {}
 
@@ -101,7 +101,7 @@ inline unique_ptr<BlobDeserializerBase> CreateDeserializer(const string& type) {
  * tensor, change the TensorProto's corresponding fields before calling
  * Deserialize.
  */
-class TensorDeserializer : public BlobDeserializerBase {
+class CAFFE2_API TensorDeserializer : public BlobDeserializerBase {
  public:
   void Deserialize(const BlobProto& proto, Blob* blob) override;
   void Deserialize(const TensorProto& proto, Tensor* tensor);

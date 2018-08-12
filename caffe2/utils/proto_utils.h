@@ -56,9 +56,9 @@ inline bool ParseFromString(const string& spec, MessageLite* proto) {
 } // namespace TextFormat
 
 
-string ProtoDebugString(const MessageLite& proto);
+string ProtoDebugString(const MessageLite& proto) CAFFE2_API;
 
-bool ParseProtoFromLargeString(const string& str, MessageLite* proto);
+bool ParseProtoFromLargeString(const string& str, MessageLite* proto) CAFFE2_API;
 
 // Text format MessageLite wrappers: these functions do nothing but just
 // allowing things to compile. It will produce a runtime error if you are using
@@ -99,19 +99,19 @@ inline bool ReadProtoFromFile(const string& filename, MessageLite* proto) {
 using ::google::protobuf::Message;
 
 namespace TextFormat {
-bool ParseFromString(const string& spec, Message* proto);
+bool ParseFromString(const string& spec, Message* proto) CAFFE2_API;
 } // namespace TextFormat
 
-string ProtoDebugString(const Message& proto);
+string ProtoDebugString(const Message& proto) CAFFE2_API;
 
-bool ParseProtoFromLargeString(const string& str, Message* proto);
+bool ParseProtoFromLargeString(const string& str, Message* proto) CAFFE2_API;
 
-bool ReadProtoFromTextFile(const char* filename, Message* proto);
+bool ReadProtoFromTextFile(const char* filename, Message* proto) CAFFE2_API;
 inline bool ReadProtoFromTextFile(const string filename, Message* proto) {
   return ReadProtoFromTextFile(filename.c_str(), proto);
 }
 
-void WriteProtoToTextFile(const Message& proto, const char* filename);
+void WriteProtoToTextFile(const Message& proto, const char* filename) CAFFE2_API;
 inline void WriteProtoToTextFile(const Message& proto, const string& filename) {
   return WriteProtoToTextFile(proto, filename.c_str());
 }
@@ -183,8 +183,8 @@ inline OperatorDef CreateOperatorDef(
       engine);
 }
 
-bool HasOutput(const OperatorDef& op, const std::string& output);
-bool HasInput(const OperatorDef& op, const std::string& input);
+bool HasOutput(const OperatorDef& op, const std::string& output) CAFFE2_API;
+bool HasInput(const OperatorDef& op, const std::string& input) CAFFE2_API;
 
 /**
  * @brief A helper class to index into arguments.
@@ -194,7 +194,7 @@ bool HasInput(const OperatorDef& op, const std::string& input);
  * does not copy the operator def, so one would need to make sure that the
  * lifetime of the OperatorDef object outlives that of the ArgumentHelper.
  */
-class ArgumentHelper {
+class CAFFE2_API ArgumentHelper {
  public:
   template <typename Def>
   static bool HasArgument(const Def& def, const string& name) {
@@ -293,8 +293,8 @@ class ArgumentHelper {
 
 // Helper methods to get an argument from OperatorDef or NetDef given argument
 // name. Throws if argument does not exist.
-const Argument& GetArgument(const OperatorDef& def, const string& name);
-const Argument& GetArgument(const NetDef& def, const string& name);
+const Argument& GetArgument(const OperatorDef& def, const string& name) CAFFE2_API;
+const Argument& GetArgument(const NetDef& def, const string& name) CAFFE2_API;
 
 // Helper methods to query a boolean argument flag from OperatorDef or NetDef
 // given argument name. If argument does not exist, return default value.
@@ -302,19 +302,19 @@ const Argument& GetArgument(const NetDef& def, const string& name);
 bool GetFlagArgument(
     const OperatorDef& def,
     const string& name,
-    bool default_value = false);
+    bool default_value = false) CAFFE2_API;
 bool GetFlagArgument(
     const NetDef& def,
     const string& name,
-    bool default_value = false);
+    bool default_value = false) CAFFE2_API;
 
 Argument* GetMutableArgument(
     const string& name,
     const bool create_if_missing,
-    OperatorDef* def);
+    OperatorDef* def) CAFFE2_API;
 
 template <typename T>
-Argument MakeArgument(const string& name, const T& value);
+Argument MakeArgument(const string& name, const T& value) CAFFE2_API;
 
 template <typename T>
 inline void AddArgument(const string& name, const T& value, OperatorDef* def) {

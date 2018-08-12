@@ -35,7 +35,7 @@ class Workspace;
 
 // Net is a thin struct that owns all the operators together with the operator
 // contexts.
-class NetBase : public Observable<NetBase> {
+class CAFFE2_API NetBase : public Observable<NetBase> {
  public:
   NetBase(const std::shared_ptr<const NetDef>& net_def, Workspace* ws);
   virtual ~NetBase() noexcept {}
@@ -151,8 +151,8 @@ CAFFE_DECLARE_REGISTRY(
  * created net object to the workspace's net map, while this function returns
  * a standalone net object.
  */
-unique_ptr<NetBase> CreateNet(const NetDef& net_def, Workspace* ws);
-unique_ptr<NetBase> CreateNet(
+unique_ptr<NetBase> CAFFE2_API CreateNet(const NetDef& net_def, Workspace* ws);
+unique_ptr<NetBase> CAFFE2_API CreateNet(
     const std::shared_ptr<const NetDef>& net_def,
     Workspace* ws);
 

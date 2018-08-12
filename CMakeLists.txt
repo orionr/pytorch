@@ -141,12 +141,23 @@ cmake_dependent_option(
     "BUILD_CAFFE2" OFF)
 option(USE_DISTRIBUTED "Use THD (distributed)" OFF)
 option(USE_DISTRIBUTED_MW "Use THD (distributed) master worker" OFF)
+option(HIDE_INTERNAL_SYMBOLS "Hide internal symbols" ON)
+
+# hack
+set(HIDE_INTERNAL_SYMBOLS ON)
 
 # Used when building Caffe2 through setup.py
 option(BUILDING_WITH_TORCH_LIBS "Tell cmake if Caffe2 is being built alongside torch libs" OFF)
 
 if (USE_ATEN)
     set(BUILD_ATEN ${USE_ATEN})
+endif()
+
+# ---[ Symbol visibility.
+if (HIDE_INTERNAL_SYMBOLS)
+    set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+    set(CMAKE_C_VISIBILITY_PRESET hidden)
+#    set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 endif()
 
 # ---[ CMake scripts + modules
@@ -200,8 +211,8 @@ if(NOT MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-narrowing")
   # Eigen fails to build with some versions, so convert this to a warning
   # Details at http://eigen.tuxfamily.org/bz/show_bug.cgi?id=1459
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-field-initializers")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-type-limits")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-array-bounds")
@@ -230,7 +241,7 @@ if(NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments")
   endif()
   if ((APPLE AND (NOT ("${CLANG_VERSION_STRING}" VERSION_LESS "9.0")))
-    OR (CMAKE_COMPILER_IS_GNUCXX 
+    OR (CMAKE_COMPILER_IS_GNUCXX
     AND (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0 AND NOT APPLE)))
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -faligned-new")
   endif()

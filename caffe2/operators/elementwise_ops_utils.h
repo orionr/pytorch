@@ -10,13 +10,14 @@
 namespace caffe2 {
 namespace elementwise_ops_utils {
 
-std::tuple<size_t, size_t, size_t>
+std::tuple<size_t, size_t, size_t> CAFFE2_API
 ComputeLegacyBroadcastSizes(const Tensor& A, const Tensor& B, int axis);
-std::vector<int> ComputeBinaryBroadcastForwardDims(
+
+std::vector<int> CAFFE2_API ComputeBinaryBroadcastForwardDims(
     const std::vector<int>& A_dims,
     const std::vector<int>& B_dims);
 
-void ComputeBinaryBroadcastBackwardAxes(
+void CAFFE2_API ComputeBinaryBroadcastBackwardAxes(
     const std::vector<int>& A_dims,
     const std::vector<int>& B_dims,
     std::vector<int>* A_axes,
