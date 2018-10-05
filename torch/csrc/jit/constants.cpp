@@ -9,7 +9,8 @@ namespace torch { namespace jit {
 Value* insertConstant(
     Graph& g,
     IValue val,
-    at::optional<SourceRange> loc) {
+    at::optional<SourceRange> loc,
+    at::optional<Scope*> scope) {
   Node * n = g.create(prim::Constant);
   if(val.isTensor()) {
     at::Tensor ref = std::move(val).toTensor();
@@ -56,6 +57,8 @@ Value* insertConstant(
   }
   if(loc)
     n->setSourceLocation(std::make_shared<SourceRange>(*loc));
+  if(scope)
+    n->setScope(*scope);
   return g.insertNode(n)->output();
 }
 
