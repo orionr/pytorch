@@ -33,6 +33,17 @@ struct SymbolicVariable {
         g = inputs.at(0).value()->owningGraph();
       }
       Node * n = g->insertNode(g->create(kind, num_outputs));
+      size_t max_depth = 0;
+      Scope* s;
+      for(auto n : inputs) {
+        size_t d = n.value()->node()->scope()->getDepth();
+        if(d > max_depth){
+          max_depth = d;
+          s = n.value()->node()->scope();
+        }
+      }
+      n->setScope(s);
+
       for(auto i : inputs) {
         n->addInput(i.value());
       }

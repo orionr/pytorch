@@ -49,6 +49,16 @@ public:
     }
     return current;
   }
+  size_t getDepth(){
+    size_t d = 1;
+    Scope* current = this;
+    while (current->parent_) {
+      current = current->parent_;
+      d += 1;
+    }
+    return d;
+  }
+
   Symbol name() {
     return name_;
   }
